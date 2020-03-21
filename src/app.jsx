@@ -1,39 +1,60 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { timesSeries } from 'async';
 
 class App extends Component {
   render() {
     return (
       <div>
         <h1>Tic Tac Toe</h1>
-        <Row />
+        <Board />
       </div>
     );
   }
 }
 
-
-class Row extends Component {
+class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '-'
+      values: ['-', '-', '-', '-', '-', '-', '-', '-', '-']
     };
-  this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   };
 
-  handleClick(e) {
+  handleClick() {
     this.setState({
       value: this.state.value === 'X' ? 'O' : 'X'
     });
   };
 
   render() {
+    let row = [];
+    for(let i = 0; i < 3; i++){
+      row.push(<Row value={this.state.value} handleClick={this.handleClick} />)
+    }
+    return(
+      <div>
+        {row}
+      </div>
+    )
+  };
+};
+
+
+class Row extends Component {
+  constructor(props) {
+    super(props);
+  };
+
+  render() {
+    let box = [];
+    for(let i = 0; i < 3; i++){
+      box.push(<Box value={this.props.value} handleClick={this.props.handleClick} />)
+    }
     return (
       <div>
-        <Box value={this.state.value} handleClick={this.handleClick} />
-        <Box value={this.state.value} handleClick={this.handleClick} />
-        <Box value={this.state.value} handleClick={this.handleClick} />
+        {box}
       </div>
     )
   };
@@ -50,7 +71,7 @@ class Box extends Component {
         {this.props.value}
       </button>
     )
-  }
-}
+  };
+};
 
 render(<App />, document.querySelector('#root'));
